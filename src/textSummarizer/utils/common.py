@@ -26,6 +26,11 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
     try:
         with open(path_to_yaml) as yaml_file:
             content = yaml.safe_load(yaml_file)
+
+            if content is None:
+                raise BoxValueError(f"yaml file is empty: {path_to_yaml}")
+            if not isinstance(content, dict):
+                raise BoxValueError(f"yaml file format is not correct: {path_to_yaml}")
             logger.info(f"yaml file: {path_to_yaml} loaded successfully")
             return ConfigBox(content)
     except BoxValueError:
